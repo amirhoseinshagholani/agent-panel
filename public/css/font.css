@@ -1,0 +1,22 @@
+
+@font-face {
+    font-family: 'vazir';
+    src: url('../fonts/vazir/Vazir.eot') format('eot'),
+         url('../fonts/vazir/Vazir.ttf') format('ttf'),
+         url('../fonts/vazir/Vazir.woff') format('woff'),
+         url('../fonts/Vazir.woff2') format('woff2')
+}
+
+
+@font-face {
+    font-family: 'peyda';
+    src: url('../fonts/peyda/peydaWeb-light.woff') format('woff'),
+}
+
+.font-peyda{
+    font-family: 'peyda';
+}
+
+body{
+    font-family: 'vazir';
+}

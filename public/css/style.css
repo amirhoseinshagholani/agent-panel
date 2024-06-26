@@ -1,0 +1,10 @@
+
+.is-invalid{
+    color: red;
+}
+
+.input-ltr {
+    direction: ltr;
+    text-align: right;
+  }
+  
