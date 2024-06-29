@@ -14,33 +14,70 @@ const UploadFiles = () => {
     const { register, handleSubmit } = useForm();
     const submitForm = useSubmit();
 
-
+    const [fileContent,setFileContent] = useState(null);
     const [fileName, setFileName] = useState('');
-    
+    const [fileType, setFileType] = useState('');
+    const [fileSize,setFileSize] = useState('');
+
     const handleFileChange = (event) => {
         const file = event.target.files[0];
         if (file) {
-            setFileName(file.name);
-            
+            setFileName(file.name);   
+            setFileType(file.type);
+            setFileSize(file.size);
             const reader = new FileReader();
             reader.onload = (e) => {
                 setFileContent(e.target.result);
             };
-            reader.readAsText(file);
+            reader.readAsDataURL(file);
         }
     };
-    const onSubmit = (event) => {
-        // console.log("hi");
-        var dataForInsert = new FormData();
-        dataForInsert.append('notes_title', data.notes_title);
-        dataForInsert.append('assigned_user_id', "19X1");
-        dataForInsert.append('folderid', "22x1");
-        dataForInsert.append('cf_1479', data.filetype);
-        // // console.log(data.fileName);
-        // if (data.filename) {
-            dataForInsert.append('file', event.target.file.files[0]);
-        // }
-        // submitUploadFiles(dataForInsert);
+
+    const onSubmit = async(event) => {
+        console.log(fileContent);
+        if (fileContent && fileType) {
+            const byteString = atob(fileContent.split(',')[1]);
+            const mimeString = fileContent.split(',')[0].split(':')[1].split(';')[0];
+            const ab = new ArrayBuffer(byteString.length);
+            const ia = new Uint8Array(ab);
+            for (let i = 0; i < byteString.length; i++) {
+                ia[i] = byteString.charCodeAt(i);
+            }
+            const blob = new Blob([ab], { type: mimeString });
+
+            const sinaToken = localStorage.getItem('sinaToken');
+            const sessionName = localStorage.getItem('sessionName');
+            const elemment = {
+                "notes_title": event.notes_title,
+                "filename": fileName,
+                "filetype": fileType,
+                "filesize": fileSize,
+                "filelocationtype": "I",
+                "filestatus": "1",
+                "assigned_user_id": "19x1"
+            };
+            let data = new FormData();
+            data.append('file', blob, fileName);
+            
+            const response_insertContact = await httpService.post('/NetExpert/RegisterCrmTicket', {
+                "sessionName": sessionName,
+                "file":fileName,
+                "operation": `create`,
+                "element": JSON.stringify(elemment),
+                "elementType": "Documents",
+                "CrmRegisterRequestType": 1
+            }, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                    "Authorization": sinaToken
+            }
+            });
+        
+            alert("فایل مورد نظر آپلود شد");
+            console.log(response_insertContact);
+        } else {
+            console.log('No file content or type to save');
+        }
     }
 
     return (
