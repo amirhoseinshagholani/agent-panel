@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { httpService } from "../../../core/http-service";
 import { useState } from "react";
 import { MRT_EditRowModal } from "material-react-table";
+import { useDropzone } from 'react-dropzone';
 
 // cf_1479 "نوع سند"
 // filename
@@ -15,34 +16,149 @@ const UploadFiles = () => {
     const submitForm = useSubmit();
 
 
-    const [fileName, setFileName] = useState('');
-    
+    // const [fileName, setFileName] = useState('');
+
+    const [filePath, setFilePath] = useState(null);
     const handleFileChange = (event) => {
-        const file = event.target.files[0];
-        if (file) {
-            setFileName(file.name);
-            
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                setFileContent(e.target.result);
-            };
-            reader.readAsText(file);
-        }
+        // setFile(event.target.files[0]);
     };
-    const onSubmit = (event) => {
-        // console.log("hi");
-        var dataForInsert = new FormData();
-        dataForInsert.append('notes_title', data.notes_title);
-        dataForInsert.append('assigned_user_id', "19X1");
-        dataForInsert.append('folderid', "22x1");
-        dataForInsert.append('cf_1479', data.filetype);
-        // // console.log(data.fileName);
-        // if (data.filename) {
-            dataForInsert.append('file', event.target.file.files[0]);
+
+    const onDrop = async (acceptedFiles) => {
+        // const sinaToken = localStorage.getItem('sinaToken');
+        // const sessionName = localStorage.getItem('sessionName');
+        const file = acceptedFiles[0];
+        console.log(file);
+        setFilePath(file)
+
+        // const formData = new FormData();
+        // formData.append('file', file);
+        // formData.append('operation', 'create');
+        // formData.append('sessionName', sessionName);
+        // formData.append('element', JSON.stringify({
+        //     "notes_title": "Document test",
+        //     "filename": file.name,
+        //     "filetype": file.type,
+        //     "filesize": file.size,
+        //     "filelocationtype": "I",
+        //     "filestatus": "1",
+        //     "assigned_user_id": "19x1"
+        // }));
+        // formData.append('elementType', 'Documents');
+
+        // try {
+        //     const response = await axios.post('https://test.crm24.io/webservice.php', formData, {
+        //         headers: {
+        //             'Authorization': 'Bearer YOUR_ACCESS_TOKEN', // جایگزین کردن با توکن واقعی
+        //             'Content-Type': 'multipart/form-data'
+        //         }
+        //     });
+
+        //     console.log(JSON.stringify(response.data));
+        //     alert("File uploaded successfully!"); // نمایش پیام آپلود موفقیت‌آمیز
+        // } catch (error) {
+        //     console.error(error);
+        //     alert("Error uploading file."); // نمایش پیام خطا در صورت اشکال در آپلود
         // }
+    };
+
+    const onSubmit = async (event) => {
+        const sinaToken = localStorage.getItem('sinaToken');
+        const sessionName = localStorage.getItem('sessionName');
+        const formData = new FormData();
+        formData.append('file', filePath.name);
+        formData.append('operation', 'create');
+        formData.append('sessionName', sessionName);
+        formData.append('element', JSON.stringify({
+            "notes_title": event.notes_title,
+            "filename": filePath.name,
+            "filetype": filePath.type,
+            "filesize": filePath.size,
+            "filelocationtype": "I",
+            "filestatus": "1",
+            "assigned_user_id": "19x1"
+        }));
+        formData.append('elementType', 'Documents');
+        try {
+            const response = await httpService.post('/NetExpert/RegisterCrmTicket', formData, {
+                headers: {
+                    'Authorization': sinaToken, // جایگزین کردن با توکن واقعی
+                }
+            });
+
+            console.log(JSON.stringify(response.data));
+            alert("File uploaded successfully!"); // نمایش پیام آپلود موفقیت‌آمیز
+        } catch (error) {
+            console.error(error);
+            alert("Error uploading file."); // نمایش پیام خطا در صورت اشکال در آپلود
+        }
+        // console.log(event.filename[0].size);
+        // formData.append('file', file);
+        // const element = {
+        //     "notes_title": event.notes_title,
+        //     "filename": event.filename[0].name,
+        //     "filetype": event.filename[0].type,
+        //     "filesize": event.filename[0].size,
+        //     "filelocationtype": "I",
+        //     "filestatus": "1",
+        //     "assigned_user_id": "19x1"
+        // };
+        // formData.append('operation', 'create');
+        // formData.append('sessionName', sessionName);
+        // formData.append('element', JSON.stringify(element));
+        // formData.append('elementType', 'Documents');
+
+        // try {
+        //     const response = await httpService.post('/NetExpert/RegisterCrmTicket', formData, {
+        //         headers: {
+        //             'Authorization': sinaToken, // جایگزین کردن با توکن واقعی
+        //             'Content-Type': 'multipart/form-data'
+        //         }
+        //     });
+
+        //     console.log(JSON.stringify(response.data));
+        //     alert("File uploaded successfully!"); // نمایش پیام آپلود موفقیت‌آمیز
+        // } catch (error) {
+        //     console.error(error);
+        //     alert("Error uploading file."); // نمایش پیام خطا در صورت اشکال در آپلود
+        // }
+        // formData.append('operation', 'create');
+        // formData.append('sessionName', sessionName);
+        // formData.append('element', JSON.stringify({
+        //     "notes_title": "Document test",
+        //     "filename": file.name,
+        //     "filetype": file.type,
+        //     "filesize": file.size,
+        //     "filelocationtype": "I",
+        //     "filestatus": "1",
+        //     "assigned_user_id": "19x1"
+        // }));
+        // formData.append('elementType', 'Documents');
+        // try {
+        //     const response = await httpService.post('/NetExpert/RegisterCrmTicket', formData, {
+        //         headers: {
+        //             'Authorization': sinaToken,
+        //             'Content-Type': 'multipart/form-data'
+        //         }
+        //     });
+
+        //     console.log(JSON.stringify(response.data));
+        //     alert("File uploaded successfully!"); // نمایش پیام آپلود موفقیت‌آمیز
+        // } catch (error) {
+        //     console.error(error);
+        //     alert("Error uploading file."); // نمایش پیام خطا در صورت اشکال در آپلود
+        // }
+        // var dataTemp = new FormData();
+        // var dataForInsert;
+        // dataTemp.append('notes_title', event.notes_title);
+        // dataTemp.append('assigned_user_id', "19X1");
+        // dataTemp.append('folderid', "22x1");
+        // dataTemp.append('cf_1479', event.filetype);
+        // dataTemp.append('file', event.filename[0]);
+        // // var fileSlat = fs.statSync(event.filename[0]);
+        // // dataForInsert = Object.fromEntries(dataTemp);
         // submitUploadFiles(dataForInsert);
     }
-
+    const { getRootProps, getInputProps } = useDropzone({ onDrop });
     return (
         <div>
             <div className="text-gray-900 bg-gray-200 rounded rounded-t-3xl">
@@ -81,7 +197,7 @@ const UploadFiles = () => {
                             <div className="mb-3">
                                 <label htmlFor="name">فایل:</label>
                                 <input  {...register('filename', {
-                                    required: 'انتخاب فایل الزامی است'
+                                   
                                 })} className="h-10 bg-gray-200 focus:outline-none w-full p-2 rounded-lg" type="file" onChange={handleFileChange} />
                             </div>
                             <div className="mb-3">
@@ -101,6 +217,10 @@ const UploadFiles = () => {
                                 </button>
                             </div>
                         </div>
+                        <div {...getRootProps()} style={{ border: '2px dashed #eee', padding: '20px', textAlign: 'center' }}>
+                            <input {...getInputProps()} />
+                            <p>Drag 'n' drop some files here, or click to select files</p>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -112,37 +232,52 @@ const UploadFiles = () => {
 
 export default UploadFiles;
 
+
+
 export async function submitUploadFiles(request) {
-    // const formData = await request.formData();
-    console.log(request);
-    const data = Object.fromEntries(request);
     const sinaToken = localStorage.getItem('sinaToken');
     const sessionName = localStorage.getItem('sessionName');
-    
 
-    // const currentFile = [{
-    //     notes_title: data.notes_title,
-    //     filename: data.file.name,
-    //     filesize: data.file.size,
-    //     filetype: data.file.type,
-    //     filelocationtype: "I",
-    //     filestatus: 1,
-    //     assigned_user_id: data.assigned_user_id,
-    //     folderid: data.folderid,
-    //     cf_1479: data.cf_1479,  //It's document's type
-    // }];
-    
+    const fileData = request.file;
+    // console.log(fileData);
+
+    const currentFile = [{
+        notes_title: request.notes_title,
+        filename: request.file.name,
+        filesize: request.file.size,
+        filetype: request.file.type,
+        filelocationtype: "I",
+        filestatus: 1,
+        assigned_user_id: request.assigned_user_id,
+        folderid: request.folderid,
+        cf_1479: request.cf_1479,  //It's document's type
+    }];
+
+    console.log(file);
+    const formData = new FormData();
+    formData.append('file', file);
+
+    // افزودن فیلدهای اضافی به FormData
+    formData.append('notes_title', "ccc");
+    formData.append('assigned_user_id', "19X1");
+    formData.append('folderid', "22x1");
+    formData.append('cf_1479', "شناسنامه");
+    formData.append('sessionName', sessionName);
+    formData.append('operation', 'create');
+    formData.append('elementType', 'Documents');
+    formData.append('CrmRegisterRequestType', 1);
+
     if (currentFile) {
         const response_insertContact = await httpService.post('/NetExpert/RegisterCrmTicket', {
             "sessionName": sessionName,
-            "file":data.file,
+            "file": file,
             "operation": `create`,
             "element": JSON.stringify(currentFile[0]),
             "elementType": "Documents",
             "CrmRegisterRequestType": 1
         }, {
             headers: {
-                "Content-Type": "multipart/form-data",
+                "Content-Type": "multipart/form-data; boundary=<calculated when request is sent>",
                 "Authorization": sinaToken
             }
         });
@@ -151,7 +286,6 @@ export async function submitUploadFiles(request) {
         //     return response_insertContact.status == 200;
         console.log(response_insertContact);
     }
-
 
     return false;
 }
