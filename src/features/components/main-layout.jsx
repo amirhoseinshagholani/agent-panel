@@ -93,7 +93,7 @@ const MainLayout = () => {
                 </main>
                 <footer id="footer" className="bg-slate-700 mt-auto">
                     <div dir="ltr" className="text-white p-2 pr-5 text-sm font-peyda">
-                        © nekatel - <span className="text-[#ddad22]">desine by AmirHosein Shagholani</span>
+                        © nekatel - <span className="text-[#ddad22]">design by AmirHosein Shagholani</span>
                     </div>
                 </footer>
             </div>
