@@ -65,6 +65,7 @@ const MainLayout = () => {
                             <a href="/panel/showCustomers"><li className="bg-gradient-to-l hover:from-[#014087] hover:to-[#cbd5e1]  p-4 pt-3 pb-3">مشتریان</li></a>
                             <a href="/panel/showProducts"><li className="bg-gradient-to-l hover:from-[#014087] hover:to-[#cbd5e1]  p-4 pt-3 pb-3">لیست محصولات</li></a>
                             <a href="/panel/insertSale"><li className="bg-gradient-to-l hover:from-[#014087] hover:to-[#cbd5e1]  p-4 pt-3 pb-3">ثبت سفارش</li></a>
+                            {/* <a href="/panel/editSale"><li className="bg-gradient-to-l hover:from-[#014087] hover:to-[#cbd5e1]  p-4 pt-3 pb-3">اصلاح سفارش</li></a> */}
                             {/* <a href="/panel/uploadFiles"><li className="bg-gradient-to-l hover:from-[#014087] hover:to-[#cbd5e1]  p-4 pt-3 pb-3">آپلود فایل</li></a> */}
                             <a href="/panel/showPreFactor"><li className="bg-gradient-to-l hover:from-[#014087] hover:to-[#cbd5e1]  p-4 pt-3 pb-3">مشاهده سفارشات</li></a>
                             <a href="/panel/showFactor"><li className="bg-gradient-to-l hover:from-[#014087] hover:to-[#cbd5e1]  p-4 pt-3 pb-3">مشاهده فاکتورها</li></a>

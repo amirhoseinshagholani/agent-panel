@@ -11,7 +11,7 @@ const useFetchSalesOrder=(tableName,agentField)=>{
     const getData = async () => {
         const response = await httpService.post('/NetExpert/GetCRMQueries', {
             "sessionName": sessionName,
-            "operation": `SELECT subject,cf_1704,cf_1706,createdtime,hdnGrandTotal,pre_tax_total FROM ${tableName} where ${agentField}=${agent_id} and sostatus != 'فاکتور شده';`,
+            "operation": `SELECT subject,contact_id,cf_1704,cf_1706,createdtime,hdnGrandTotal,pre_tax_total,cf_1471,ship_state,bill_city,bill_code,bill_street FROM ${tableName} where ${agentField}=${agent_id} and sostatus != 'فاکتور شده';`,
             "CrmRequestType": 1
         }, { 
             headers: {

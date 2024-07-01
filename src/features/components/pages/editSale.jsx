@@ -2,23 +2,47 @@ import { useEffect, useMemo, useState } from "react";
 import useFetchClues from "../../hooks/useFetchClues";
 import useFetchProduct from "../../hooks/useFetchProducts";
 import { seprateNumber } from "../../../core/seprateNumber";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import { useSubmit } from "react-router-dom";
 import { httpService } from "../../../core/http-service";
 import useFetchCustomers from "../../hooks/useFetchCustomers";
+import useFetchSalesOrder from "../../hooks/useFetchSalesOrder";
+import useFetchDetailsOrder from "../../hooks/useFetchDetailsOrder";
 import Grid from "../../../core/grid";
 
-const InsertSale = () => {
+const EditSale = () => {
     const agent_id = localStorage.getItem('agent_id');
-
-
-    // const clues = useFetchClues('Leads', 'cf_1675');
     const customers = useFetchCustomers('Contacts', 'cf_1677');
+
+    const salesOrder = useFetchSalesOrder('SalesOrder', 'cf_1679');
+    const [selectedValue, setSelectedValue] = useState('');
+    const [preFactor, setPreFactor] = useState('');
+    const [detailsSalesOrder,setDetailsSalesOrder] = useState('');
+
+
+
+    const handleSelectOrder = (event) => {
+        const saleOrder = salesOrder.find(s => {
+            return s.id == event.target.value;
+        });
+        console.log(saleOrder);
+        // setSelectedValue(event.target.value);
+        setPreFactor(saleOrder);
+    }
+     
+    var temp = useFetchDetailsOrder('SalesOrder',preFactor.id);
+    // temp && setDetailsSalesOrder(temp);
+    // detailsSalesOrder && console.log(detailsSalesOrder);
+    
+    const handleChangeInput = (event) => {  
+        setPreFactor(event.target.value);
+        console.log(preFactor);  
+    } 
 
     const product = useFetchProduct();
 
-    const [productValue, setProductValue] = useState('');
-    const handleProductChange = (event) => {
+    const [productValue, setProductValue] = useState(''); 
+    const handleProductChange = (event) => {  
         setProductValue(event.target.value);
     };
 
@@ -35,7 +59,6 @@ const InsertSale = () => {
     }
 
     const [total, setTotal] = useState(0);           //جهت نمایش جمع کل مبلغ از این استیت استفاده می شود
-
     const [productList, setProductList] = useState([]);
     const [itemsList, setItemsList] = useState([]);
 
@@ -86,34 +109,30 @@ const InsertSale = () => {
         setDiscountValue(0);
     };
 
-    // useEffect(() => {
-    //     console.log(productList);
-    // }, [productList])
-
     const { register, handleSubmit } = useForm();
     const submitForm = useSubmit();
 
     const onSubmit = (data) => {
-        if (itemsList.length === 0) {
-            alert("هیچ آیتمی جهت ثبت سفارش انتخاب نشده است");
-            return false;
-        }
-        data.LineItems = JSON.stringify(itemsList);
-        submitForm(data, { method: "post" });
+        // if (itemsList.length === 0) {
+        //     alert("هیچ آیتمی جهت ثبت سفارش انتخاب نشده است");
+        //     return false;
+        // }
+        // data.LineItems = JSON.stringify(itemsList);
+        // submitForm(data, { method: "post" });
 
-        setTimeout(() => {
-            const inputs = document.querySelectorAll('input[type="text"], textarea,select');
-            inputs.forEach(input => {
-                input.value = '';
-            });
+        // setTimeout(() => {
+        //     const inputs = document.querySelectorAll('input[type="text"], textarea,select');
+        //     inputs.forEach(input => {
+        //         input.value = '';
+        //     });
 
-            setProductValue('');
-            setAmountValue(0);
-            setDiscountValue(0);
-            setProductList([]);
-            setItemsList([]);
-            setTotal(0);
-        }, 2000)
+        //     setProductValue('');
+        //     setAmountValue(0);
+        //     setDiscountValue(0);
+        //     setProductList([]);
+        //     setItemsList([]);
+        //     setTotal(0);
+        // }, 2000)
     }
 
     const [typeOfCustomer, setTypeOfCustomer] = useState();
@@ -122,12 +141,6 @@ const InsertSale = () => {
         // setTypeOfCustomer(selectedobj.getAttribute('data-status'));
         // typeOfCustomer && console.log(typeOfCustomer);
     }
-
-    // const deleteItem=(itemToDelete)=>{
-    //     const tempItemList = itemsList.filter(res => res.productid !== itemToDelete);
-    //     setItemsList(tempItemList);
-    //     // setProductList(tempItemList);
-    // }
 
     const deleteItem = (index) => {
         console.log(index);
@@ -153,17 +166,28 @@ const InsertSale = () => {
             tax: seprateNumber(parseInt(res.price * 0.1)),
             amount: res.amount,
             discount: seprateNumber(parseInt(res.discount))
-        }
+        }           
     ))
 
+    // const data2 = detailsSalesOrder && detailsSalesOrder.map(res => (
+    //     {
+    //         product: res.ProductName,
+    //         producttype: res.producttype,
+    //         price: seprateNumber(parseInt(res.price)),
+    //         tax: seprateNumber(parseInt(res.price * 0.1)),
+    //         amount: res.amount,
+    //         discount: seprateNumber(parseInt(res.discount))
+    //     }
+    // )) 
 
+    
 
-    console.log(data);
+    // console.log("data2: " + data2);
 
     const columns = useMemo(
         () => [
             {
-                accessorKey: 'product',
+                accessorKey: 'product', 
                 header: 'نام محصول',
                 size: 250,
             },
@@ -212,27 +236,48 @@ const InsertSale = () => {
         <div>
             <div className="text-gray-900 bg-gray-200 rounded rounded-t-3xl">
                 <div className="p-4 bg-gradient-to-r from-blue-200 to-blue-700 rounded-t-3xl">
-                    <div className="text-xl text-white">فرم ثبت سفارش</div>
+                    <div className="text-xl text-white">فرم اصلاح سفارش</div>
                 </div>
             </div>
             <div className="bg-gray-200 p-3">
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="bg-white shadow-xl p-7 mb-5">
+                        <div className="grid md:grid-cols-2 mb-6 mr-6">
+
+                            <div className="col-span-1 mb-3">
+                                <label htmlFor="name" className="block mb-1">سفارش:</label>
+                                <select
+                                    id="selectedSalesOrder" {...register('salesOrder')} onChange={handleSelectOrder} className="h-10 text-gray-500 bg-slate-200 focus:outline-none w-full md:w-3/4 p-2 rounded rounded-lg" required>
+                                    <option value="">انتخاب کنید...</option>
+                                    {
+                                        salesOrder && salesOrder.reverse().map(res => (
+                                            <option key={res.id} value={res.id}>{res.subject}</option>
+                                        ))
+                                    }
+                                </select>
+                            </div>
+                            {/* <div className="col-span-1 mb-3 p-5 pr-0">
+                                <button onClick={()=>console.log(selectedValue)} className="bg-gradient-to-r from-blue-400 to-blue-600 hover:from-blue-500 hover:to-blue-700 shadow-lg hover:shadow-xl transform hover:scale-105 transition duration-300 ease-in-out pt-3 pb-3 pr-5 pl-5 text-white font-bold rounded-lg" type="button" >
+                                    انتخاب
+                                </button>
+                            </div> */}
+                        </div>
+
                         <div className="font-bold bg-gradient-to-r from-orange-50 to-[#e5c834]  pt-3 pb-3 pr-5 pl-5 text-black font-bold rounded-lg">اطلاعات پایه</div>
                         <div className="grid md:grid-cols-4 mt-6 mr-6">
                             <div className="md:col-span-2">
                                 <div className="mb-3">
                                     <label htmlFor="name" className="block mb-1">موضوع:</label>
-                                    <input {...register('subject')} className="h-10 bg-slate-200 focus:outline-none w-full md:w-3/4 p-2 rounded rounded-lg" type="text" required />
+                                    <input {...register('subject')} className="h-10 bg-slate-200 focus:outline-none w-full md:w-3/4 p-2 rounded rounded-lg" type="text" onChange={handleChangeInput} value={preFactor.subject} required />
                                 </div>
 
                                 <div className="mb-3">
                                     <label htmlFor="name" className="block mb-1">مشتری:</label>
-                                    <select id="selectedCustomer" {...register('customer')} onChange={handleTypeCustomer} className="h-10 text-gray-500 bg-slate-200 focus:outline-none w-full md:w-3/4 p-2 rounded rounded-lg" required>
+                                    <select id="selectedCustomer" {...register('customer')}  className="h-10 text-gray-500 bg-slate-200 focus:outline-none w-full md:w-3/4 p-2 rounded rounded-lg" onChange={handleChangeInput} value={preFactor.contact_id} required>
                                         <option value="">انتخاب کنید...</option>
                                         {
                                             customers && customers.reverse().map(res => (
-                                                <option key={res.id} value={[res.id, "contact"]}>{res.firstname} {res.lastname}</option>
+                                                <option key={res.id} value={res.id}>{res.firstname} {res.lastname}</option>
                                             ))
                                         }
                                     </select>
@@ -244,7 +289,7 @@ const InsertSale = () => {
                                 </div>
                                 <div className="mb-3">
                                     <label htmlFor="name" className="block mb-1">نوع سفارش:</label>
-                                    <select {...register('orderType')} className="h-10 text-gray-500 bg-slate-200 focus:outline-none w-full md:w-3/4 p-2 rounded rounded-lg" required>
+                                    <select {...register('orderType')} className="h-10 text-gray-500 bg-slate-200 focus:outline-none w-full md:w-3/4 p-2 rounded rounded-lg" onChange={handleChangeInput} value={preFactor.cf_1471} required>
                                         <option value="">انتخاب کنید...</option>
                                         <option value="سیم کارت+IP ثابت+بسته اولیه+مودم">سیم کارت+IP ثابت+بسته اولیه+مودم</option>
                                         <option value="سیم کارت+IP ثابت+بسته اولیه">سیم کارت+IP ثابت+بسته اولیه</option>
@@ -259,20 +304,20 @@ const InsertSale = () => {
                             <div className="col-span-2">
                                 <div className="mb-3">
                                     <label htmlFor="name" className="block mb-1">استان:</label>
-                                    <input {...register('province')} className="h-10 bg-slate-200 focus:outline-none w-full md:w-3/4 p-2 rounded rounded-lg" required type="text" />
+                                    <input {...register('province')} className="h-10 bg-slate-200 focus:outline-none w-full md:w-3/4 p-2 rounded rounded-lg" onChange={handleChangeInput} value={preFactor.ship_state} required type="text" />
                                 </div>
 
                                 <div className="mb-3">
                                     <label htmlFor="name" className="block mb-1">شهر:</label>
-                                    <input {...register('city')} className="h-10 bg-slate-200 focus:outline-none w-full md:w-3/4 p-2 rounded rounded-lg" required type="text" />
+                                    <input {...register('city')} className="h-10 bg-slate-200 focus:outline-none w-full md:w-3/4 p-2 rounded rounded-lg" onChange={handleChangeInput} value={preFactor.bill_city} required type="text" />
                                 </div>
                                 <div className="mb-3">
                                     <label htmlFor="nampostalcodee" className="block mb-1">کد پستی:</label>
-                                    <input {...register('postalcode')} className="h-10 bg-slate-200 focus:outline-none w-full md:w-3/4 p-2 rounded rounded-lg" type="text" />
+                                    <input {...register('postalcode')} className="h-10 bg-slate-200 focus:outline-none w-full md:w-3/4 p-2 rounded rounded-lg" onChange={handleChangeInput} value={preFactor.bill_code} type="text" />
                                 </div>
                                 <div className="mb-3">
                                     <label htmlFor="name" className="block mb-1">آدرس:</label>
-                                    <textarea {...register('address')} rows={2} className="h-22 bg-slate-200 focus:outline-none w-full md:w-3/4 p-2 rounded rounded-lg" required type="text" />
+                                    <textarea {...register('address')} rows={2} className="h-22 bg-slate-200 focus:outline-none w-full md:w-3/4 p-2 rounded rounded-lg" onChange={handleChangeInput} value={preFactor.bill_street} required type="text" />
                                 </div>
                                 <div className="mt-10 mr-11 text-center">
 
@@ -336,7 +381,7 @@ const InsertSale = () => {
     )
 }
 
-export default InsertSale;
+export default EditSale;
 
 export async function submitInsertSaleOrder({ request }) {
     const formData = await request.formData();

@@ -15,6 +15,7 @@ import ShowDetailsFactor from "./features/components/pages/showDetailsFactor";
 import ShowProducts from "./features/components/pages/showProducts";
 import Example from "./features/components/pages/example";
 import UploadFiles, { submitUploadFiles } from "./features/components/pages/uploadFiles";
+import EditSale from "./features/components/pages/editSale";
 
 const router = createBrowserRouter([
     {
@@ -46,6 +47,10 @@ const router = createBrowserRouter([
             path:'insertSale',
             element:<InsertSale/>,
             action:submitInsertSaleOrder
+        },
+        {
+            path:'editSale',
+            element:<EditSale/>
         },
         {
             path:'showPreFactor',

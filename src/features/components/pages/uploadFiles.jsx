@@ -57,13 +57,14 @@ const UploadFiles = () => {
                 "filestatus": "1",
                 "assigned_user_id": "19x1"
             };
-            let data = new FormData();
+            var data = new FormData();
             data.append('file', blob, fileName);
-            
+            var obj_data = Object.fromEntries(data);
+            console.log(obj_data.file);
             const response_insertContact = await httpService.post('/NetExpert/RegisterCrmTicket', {
                 "sessionName": sessionName,
-                "file":fileName,
-                "operation": `create`,
+                "file": obj_data.file,
+                "operation": "create",
                 "element": JSON.stringify(elemment),
                 "elementType": "Documents",
                 "CrmRegisterRequestType": 1
@@ -80,7 +81,7 @@ const UploadFiles = () => {
             console.log('No file content or type to save');
         }
     }
-    const { getRootProps, getInputProps } = useDropzone({ onDrop });
+    
     return (
         <div>
             <div className="text-gray-900 bg-gray-200 rounded rounded-t-3xl">
@@ -138,10 +139,6 @@ const UploadFiles = () => {
                                     آپلود
                                 </button>
                             </div>
-                        </div>
-                        <div {...getRootProps()} style={{ border: '2px dashed #eee', padding: '20px', textAlign: 'center' }}>
-                            <input {...getInputProps()} />
-                            <p>Drag 'n' drop some files here, or click to select files</p>
                         </div>
                     </div>
                 </form>
