@@ -43,12 +43,12 @@ const ShowPreFactor = () => {
             },
             {
                 accessorKey: 'hdnGrandTotal',
-                header: 'جمع کل',
+                header: 'جمع کل(ریال)',
                 size: 150,
             },
             {
                 accessorKey: 'tax',
-                header: 'مالیات',
+                header: 'مالیات(ریال)',
                 size: 100,
             },
             {

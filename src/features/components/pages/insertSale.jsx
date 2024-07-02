@@ -301,11 +301,11 @@ const InsertSale = () => {
                                 </div>
                                 <div className="md:col-span-1 mb-3">
                                     <label htmlFor="name" className="block mb-1">تعداد:</label>
-                                    <input {...register('amount')} id="amount" onChange={handleAmountChange} value={amounttValue} className="h-10 bg-slate-200 focus:outline-none w-full md:w-3/4 p-2 rounded rounded-lg text-gray-500" type="text" placeholder="تعداد" />
+                                    <input {...register('amount')} id="amount" onChange={handleAmountChange} value={amounttValue} className="h-10 bg-slate-200 focus:outline-none w-full md:w-3/4 p-2 rounded rounded-lg text-gray-500" type="number" placeholder="تعداد" />
                                 </div>
                                 <div className="col-span-1 mb-3">
                                     <label htmlFor="name" className="block mb-1">تخفیف(ریال):</label>
-                                    <input {...register('discount')} id="discount" onChange={handleDiscountChange} value={discountValue} className="h-10 bg-slate-200 focus:outline-none w-full md:w-3/4 p-2 rounded rounded-lg text-gray-500" type="text" placeholder="تخفیف" />
+                                    <input {...register('discount')} id="discount" onChange={handleDiscountChange} value={discountValue} className="h-10 bg-slate-200 focus:outline-none w-full md:w-3/4 p-2 rounded rounded-lg text-gray-500" type="number" placeholder="تخفیف" />
                                 </div>
                                 <div className="flex items-end col-span-1 mb-3">
                                     <button onClick={addItem} className="bg-gradient-to-r from-blue-400 to-blue-600 hover:from-blue-500 hover:to-blue-700 shadow-lg hover:shadow-xl transform hover:scale-105 transition duration-300 ease-in-out pt-3 pb-3 pr-5 pl-5 text-white font-bold rounded-lg" type="button" >

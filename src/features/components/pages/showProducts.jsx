@@ -35,7 +35,7 @@ const ShowProducts = () => {
             },
             {
                 accessorKey: 'price',
-                header: 'قیمت واحد',
+                header: 'قیمت واحد(ریال)',
                 size: 150,
             },
             {

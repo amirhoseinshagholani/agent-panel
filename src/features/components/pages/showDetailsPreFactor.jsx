@@ -26,7 +26,11 @@ const ShowDetailsPreFactor=()=>{
     const data = detailsSalesOrder && detailsSalesOrder.map(res => (
         {
             name: getProductName(res.productid),
-            price: seprateNumber(parseInt(res.listprice))
+            price: seprateNumber(parseInt(res.listprice)),
+            quantity : seprateNumber(parseInt(res.quantity)),
+            tax: seprateNumber(parseInt(res.listprice * res.quantity * 0.1)),
+            discount:seprateNumber(parseInt(res.discount_amount || 0)),
+            total: seprateNumber(parseInt((res.listprice * res.quantity)+(res.listprice * res.quantity * 0.1)-(res.discount_amount)))
         }
     ))
 
@@ -35,13 +39,33 @@ const ShowDetailsPreFactor=()=>{
             {
                 accessorKey: 'name',
                 header: 'نام محصول',
-                size: 200,
+                size: 300,
             },
             {
                 accessorKey: 'price',
-                header: 'قیمت',
+                header: 'قیمت واحد(ریال)',
                 size: 200,
             },
+            {
+                accessorKey: 'quantity',
+                header: 'تعداد',
+                size:150
+            },
+            {
+                accessorKey: 'tax',
+                header: 'مالیات(ریال)',
+                size: 150,
+            },
+            {
+                accessorKey:'discount',
+                header:'تخفیف(ریال)',
+                size:150
+            },
+            {
+                accessorKey:'total',
+                header:'جمع کل(ریال)',
+                size:200
+            }
         ],
         [],
     );
