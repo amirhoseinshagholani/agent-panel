@@ -313,7 +313,7 @@ const InsertSale = () => {
                                     </button>
                                 </div>
                             </div>
-                            <div className="px-3 py-4">
+                            <div className="md:px-3 md:py-4">
                                 {
                                     <Grid columns={columns} data={data} />
                                 }
