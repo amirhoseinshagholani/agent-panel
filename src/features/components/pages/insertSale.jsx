@@ -10,8 +10,6 @@ import Grid from "../../../core/grid";
 
 const InsertSale = () => {
     const agent_id = localStorage.getItem('agent_id');
-
-
     // const clues = useFetchClues('Leads', 'cf_1675');
     const customers = useFetchCustomers('Contacts', 'cf_1677');
 

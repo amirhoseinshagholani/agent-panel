@@ -15,7 +15,7 @@ const ShowCustomers = () => {
             name: {
                 firstName: res.firstname,
                 lastName: res.lastname,
-            },
+            }, 
             mobile: res.mobile,
             melliCode: res.cf_1447,
             state: res.mailingstate,

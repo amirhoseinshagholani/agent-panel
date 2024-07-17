@@ -58,7 +58,7 @@ const Login = () => {
                                     </button> */}
                                     <div className="mt-5 text-right">
                                         <button className="bg-gradient-to-r from-green-400 to-green-600 hover:from-green-500 hover:to-green-700 shadow-lg hover:shadow-xl transform hover:scale-105 transition duration-300 ease-in-out pt-3 pb-3 pr-5 pl-5 text-white font-bold rounded-lg" type="submit">
-                                        {isSubmitting ? "در حال ورود" : "ورود"}
+                                            {isSubmitting ? "در حال ورود" : "ورود"}
                                         </button>
                                     </div>
                                 </div>
@@ -77,14 +77,18 @@ export async function loginAction({ request }) {
     const formData = await request.formData();
     const data = Object.fromEntries(formData);
 
+    const mellicode = data.mellicode;
+    const password = data.password;
+    // console.log(password);
     // const navigate = useNavigate();
 
     const sinaToken = localStorage.getItem('sinaToken');
     const sessionName = localStorage.getItem('sessionName');
 
+
     const response_getAgent = await httpService.post('/NetExpert/GetCRMQueries', {
         "sessionName": sessionName,
-        "operation": `SELECT * FROM vtcmAgents where cf_1662=${data.mellicode} AND cf_1695=${data.password};`,
+        "operation": `SELECT * FROM vtcmAgents where cf_1662=${mellicode} AND cf_1695=${password};`,
         "CrmRequestType": 1
     }, {
         headers: {
@@ -94,7 +98,6 @@ export async function loginAction({ request }) {
     }
     );
 
-    // console.log(response_getAgent.data.result.length); 
     console.log(sessionName);
     if (response_getAgent.data.result.length) {
         // console.log(response_getAgent.data.result[0].id);

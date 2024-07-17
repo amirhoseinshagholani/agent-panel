@@ -63,6 +63,7 @@ const ShowCommission=()=>{
             <div>
                 <div className="p-4 bg-gradient-to-r from-blue-200 to-blue-700 rounded-t-3xl">
                     <div className="text-xl text-white">پورسانت بازاریاب</div>
+                    <div className="text-xs text-white mt-3">تا زمانی که برای سفارش مورد نظر فاکتور صادر نشده باشد، پورسانت محاسبه نمی گردد</div>
                 </div>
                 <div className="px-3 py-4">
                     {
