@@ -3,23 +3,35 @@ import { useEffect, useState } from "react";
 import { httpService } from "@core/http-service";
 
 const useFetchCustomers=(tableName,agentField)=>{
-    const agent_id = localStorage.getItem('agent_id');
+    
     const sinaToken = localStorage.getItem('sinaToken');
     const sessionName = localStorage.getItem('sessionName');
     const [data,setData] = useState([]);
 
-    const getData = async () => {
-        const response = await httpService.post('/NetExpert/GetCRMQueries', {
-            "sessionName": sessionName,
-            "operation": `SELECT * FROM ${tableName} where ${agentField}=${agent_id};`, // where ${agentField}=${agent_id}
-            "CrmRequestType": 1
-        }, { 
+    const getData = async (tableName,agentField) => {
+        const agent_id = localStorage.getItem('agent_id');
+
+        // const response = await httpService.post('/NetExpert/GetCRMQueries', {
+        //     "sessionName": sessionName,
+        //     "operation": `SELECT * FROM ${tableName} where ${agentField}=${agent_id};`, // where ${agentField}=${agent_id}
+        //     "CrmRequestType": 1
+        // }, { 
+        //     headers: {
+        //         "Content-Type": "application/json",
+        //         "Authorization": sinaToken
+        //     }
+        // }
+        // );
+
+        const response = await httpService.post('/crm/getData', {
+            "username":"birashk@outlook.com",
+            "query": `SELECT * FROM ${tableName} where ${agentField}=${agent_id}`,
+        }, {
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": sinaToken
             }
         }
-        );
+        );     
 
         if(response){
             setData(response.data.result)
@@ -29,7 +41,7 @@ const useFetchCustomers=(tableName,agentField)=>{
     }
 
     useEffect(() => {
-        getData();
+        getData(tableName,agentField);
     }, []);
 
     return data;    

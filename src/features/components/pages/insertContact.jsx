@@ -123,9 +123,9 @@ export async function submitInsertContact({ request }) {
     const formData = await request.formData();
     const data = Object.fromEntries(formData);
     // const getBaseData = await getToken();
-    const sinaToken = localStorage.getItem('sinaToken');
-    const sessionName = localStorage.getItem('sessionName');
-    console.log(sessionName);
+    // const sinaToken = localStorage.getItem('sinaToken');
+    // const sessionName = localStorage.getItem('sessionName');
+    // console.log(sessionName);
 
     const currentContact = `{
         "firstname":"${data.name}",
@@ -144,19 +144,16 @@ export async function submitInsertContact({ request }) {
     }`;
 
     if (currentContact) {
-        const response_insertContact = await httpService.post('/NetExpert/RegisterCrmTicket', {
-            "sessionName": sessionName,
-            "operation": `create`,
+        const response_insertContact = await httpService.post('/crm/postData', {
             "element": currentContact,
             "elementType": "Contacts",
-            "CrmRegisterRequestType": 1
+            "username": "birashk@outlook.com"
         }, {
             headers: {
-                "Content-Type": "multipart/form-data; boundary=<calculated when request is sent>",
-                "Authorization": sinaToken
+                "Content-Type": "application/json",
             }
         });
-        console.log(currentContact);
+
         console.log(response_insertContact);
         alert("مشتری مورد نظر ثبت شد");
         return response_insertContact.status == 200;

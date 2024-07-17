@@ -6,7 +6,7 @@ import useFetchCustomers from "../../hooks/useFetchCustomers";
 import Grid from "../../../core/grid";
 
 
-const ShowCustomers = () => {
+const ShowCustomers =  () => {
 
     const customers = useFetchCustomers('Contacts', 'cf_1677');
 

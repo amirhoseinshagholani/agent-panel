@@ -2,25 +2,20 @@ import { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
 import { getToken } from "../../core/getToken";
 import { httpService } from "../../core/http-service";
-
+import Cookies from 'js-cookie';
 
 const MainLayout = () => {
 
-    const getData = async (agent_id) => {
-        const sinaToken = localStorage.getItem('sinaToken');
-        const sessionName = localStorage.getItem('sessionName');
-
-        const response_getAgent = await httpService.post('/NetExpert/GetCRMQueries', {
-            "sessionName": sessionName,
-            "operation": `SELECT * FROM vtcmAgents where id=${agent_id};`,
-            "CrmRequestType": 1
+    const getData = async (agent_id) => {        
+        const response_getAgent = await httpService.post('/crm/getData', {
+            "username":"birashk@outlook.com",
+            "query": `SELECT * FROM vtcmAgents where id=${agent_id}`,
         }, {
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": sinaToken
             }
         }
-        );
+        );        
         return response_getAgent.data.result[0];
     }
 
@@ -29,6 +24,8 @@ const MainLayout = () => {
 
     useEffect(() => {
         const agent_id = localStorage.getItem('agent_id');
+        // const agent_id = Cookies.get('agent_id');
+        // console.log(agent_id);
         getData(agent_id).then(res => setAgent(res));
     }, [])
 

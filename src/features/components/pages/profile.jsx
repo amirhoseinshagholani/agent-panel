@@ -7,10 +7,6 @@ const Profile = () => {
 
     const { agent } = useOutletContext();
 
-    // useEffect(()=>{
-    //     console.log(agent);
-    // },[agent])
-
     return (
         <div>
             <div className="text-gray-900 bg-gray-200 rounded rounded-t-3xl">
@@ -82,123 +78,6 @@ const Profile = () => {
                 </form>
 
             </div>
-
-
-            {/* <form action="#">
-                <div className={`grid grid-cols-4 gap-5 mt-12 mr-12 text-sm ${agent ? 'text-slate-700' : 'text-slate-400'}`}>
-                    <div className="col-span-2">
-                        <div className="mb-3 flex gap-2">
-                            <div>
-                                <label htmlFor="">نام: </label>
-                            </div>
-                            <div className="text-left w-full">
-                                <input className="h-10 bg-slate-200 focus:outline-none w-full p-2 rounded rounded-lg" readOnly name="name" type="text" placeholder="نام" value={agent ? agent.fld_vtcmagentsf1 : "در حال بارگزاری..."}/>
-                            </div>
-                        </div>
-                        <div className="mb-3 flex gap-2">
-                            <div className="text-nowrap">
-                                <label  htmlFor="">کد ملی : </label>
-                            </div>
-                            <div className="text-left w-full">
-                                <input className="h-10 bg-slate-200 focus:outline-none w-full p-2 rounded rounded-lg" readOnly name="name" type="text" placeholder="کد ملی" value={agent ? agent.cf_1662 : "در حال بارگزاری..."}/>
-                            </div>
-                        </div> 
-                        <div className="mb-3 flex gap-2">
-                            <div className="text-nowrap">
-                                <label htmlFor="">شماره موبایل : </label>
-                            </div>
-                            <div className="text-left w-full">
-                                <input className="h-10 bg-slate-200 focus:outline-none w-full p-2 rounded rounded-lg" readOnly name="name" type="text" placeholder="شماره موبایل" value={agent ? agent.cf_1656 : "در حال بارگزاری..."}/>
-                            </div>
-                        </div>      
-                        <div className="mb-3 flex gap-2">
-                            <div className="text-nowrap">
-                                <label htmlFor="">فیلد کاری : </label>
-                            </div>
-                            <div className="text-left w-full">
-                                <input className="h-10 bg-slate-200 focus:outline-none w-full p-2 rounded rounded-lg" readOnly name="name" type="text" placeholder="فیلد کاری" value={agent ? agent.cf_1660 : "در حال بارگزاری..."}/>
-                            </div>
-                        </div> 
-                        <div className="mb-3 flex gap-2">
-                            <div className="text-nowrap">
-                                <label htmlFor="">ایمیل : </label>
-                            </div>
-                            <div className="text-left w-full">
-                                <input className="h-10 bg-slate-200 focus:outline-none w-full p-2 rounded rounded-lg" readOnly name="name" type="text" placeholder="ایمیل" value={agent ? agent.cf_1658 : "در حال بارگزاری..."}/>
-                            </div>
-                        </div> 
-                        <div className="mb-3 flex gap-2">
-                            <div className="text-nowrap">
-                                <label htmlFor="">تلفن : </label>
-                            </div>
-                            <div className="text-left w-full">
-                                <input className="h-10 bg-slate-200 focus:outline-none w-full p-2 rounded rounded-lg" name="name" type="text" readOnly placeholder="تلفن" value={agent ? agent.cf_1654 : "در حال بارگزاری..."}/>
-                            </div>
-                        </div>  
-                        <div className="mb-3 flex gap-2">
-                            <div className="text-nowrap">
-                                <label htmlFor="">توضیحات : </label>
-                            </div>
-                            <div className="text-left w-full">
-                                <textarea rows={2} className="h-22 bg-slate-200 focus:outline-none w-full p-2 rounded rounded-lg" readOnly name="name" type="text" placeholder="توضیحات" value={agent ? agent.cf_1672 : "در حال بارگزاری..."}/>
-                            </div>
-                        </div> 
-                    </div>
-                      
-                    <div className="col-span-2">
-                        
-                        <div className="mb-3 flex gap-2">
-                            <div className="text-nowrap">
-                                <label htmlFor="">کد پستی : </label>
-                            </div>
-                            <div className="text-left w-full">
-                                <input className="h-10 bg-slate-200 focus:outline-none w-full p-2 rounded rounded-lg" name="name" type="text" readOnly placeholder="کد پستی" value={agent ? agent.cf_1670 : "در حال بارگزاری..."}/>
-                            </div>
-                        </div>   
-                        <div className="mb-3 flex gap-2">
-                            <div className="text-nowrap">
-                                <label htmlFor="">شماره حساب : </label>
-                            </div>
-                            <div className="text-left w-full">
-                                <input className="h-10 bg-slate-200 focus:outline-none w-full p-2 rounded rounded-lg" name="name" type="text" readOnly placeholder="شماره حساب" value={agent ? agent.cf_1689 : "در حال بارگزاری..."}/>
-                            </div>
-                        </div>   
-                        <div className="mb-3 flex gap-2">
-                            <div className="text-nowrap">
-                                <label htmlFor="">شماره شبا : </label>
-                            </div>
-                            <div className="text-left w-full">
-                                <input className="h-10 bg-slate-200 focus:outline-none w-full p-2 rounded rounded-lg" name="name" type="text" readOnly placeholder="شماره شبا" value={agent ? agent.cf_1691 : "در حال بارگزاری..."} /> 
-                            </div>
-                        </div>   
-                        <div className="mb-3 flex gap-2">
-                            <div className="text-nowrap">
-                                <label htmlFor="">استان : </label>
-                            </div>
-                            <div className="text-left w-full">
-                                <input className="h-10 bg-slate-200 focus:outline-none w-full p-2 rounded rounded-lg" name="name" type="text" readOnly placeholder="استان" value={agent ? agent.cf_1664 : "در حال بارگزاری..."}/>
-                            </div>
-                        </div>    
-                        <div className="mb-3 flex gap-2">
-                            <div className="text-nowrap">
-                                <label htmlFor="">شهر : </label>
-                            </div>
-                            <div className="text-left w-full">
-                                <input className="h-10 bg-slate-200 focus:outline-none w-full p-2 rounded rounded-lg" name="name" type="text" readOnly placeholder="شهر" value={agent ? agent.cf_1666 : "در حال بارگزاری..."}/>
-                            </div>
-                        </div> 
-                        <div className="mb-3 flex gap-2">
-                            <div className="text-nowrap">
-                                <label htmlFor="">آدرس : </label>
-                            </div>
-                            <div className="text-left w-full">
-                                <textarea rows={2} className="h-22 bg-slate-200 focus:outline-none w-full p-2 rounded rounded-lg" name="name" readOnly type="text" placeholder="آدرس" value={agent ? agent.cf_1668 : "در حال بارگزاری..."}/>
-                            </div>
-                        </div>  
-                        
-                    </div>
-                </div>
-            </form> */}
         </div>
     )
 }
