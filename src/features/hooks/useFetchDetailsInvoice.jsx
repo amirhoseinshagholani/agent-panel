@@ -8,18 +8,29 @@ const useFetchDetailsInvoice=(tableName,InvoiceId)=>{
     const sessionName = localStorage.getItem('sessionName');
     const [data,setData] = useState([]);
 
-    const getData = async () => {
-        const response = await httpService.post('/NetExpert/GetCRMQueries', {
-            "sessionName": sessionName,
-            "operation": `SELECT * FROM ${tableName} where id=${InvoiceId};`,
-            "CrmRequestType": 1
-        }, { 
+    const getData = async (tableName,InvoiceId) => {
+        // const response = await httpService.post('/NetExpert/GetCRMQueries', {
+        //     "sessionName": sessionName,
+        //     "operation": `SELECT * FROM ${tableName} where id=${InvoiceId};`,
+        //     "CrmRequestType": 1
+        // }, { 
+        //     headers: {
+        //         "Content-Type": "application/json",
+        //         "Authorization": sinaToken
+        //     }
+        // }
+        // );
+        const sessionName = await localStorage.getItem('sessionName');
+
+        const response = await httpService.post('/crm/getData', {
+            "sessionName":sessionName,
+            "query": `SELECT * FROM ${tableName} where id=${InvoiceId}`,
+        }, {
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": sinaToken
             }
         }
-        );
+        );   
 
         if(response){
             setData(response.data.result)
@@ -29,8 +40,8 @@ const useFetchDetailsInvoice=(tableName,InvoiceId)=>{
     }
 
     useEffect(() => {
-        getData();
-    }, []);
+        getData(tableName,InvoiceId);
+    }, [tableName]);
 
     return data;    
 }

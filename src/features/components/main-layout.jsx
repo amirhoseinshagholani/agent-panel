@@ -6,9 +6,19 @@ import Cookies from 'js-cookie';
 
 const MainLayout = () => {
 
-    const getData = async (agent_id) => {        
+    const getData = async (agent_id) => {    
+        // const response_getSessionName = await httpService.post('/crm/getSessionName', {
+        //     "username":"birashk@outlook.com",
+        // }, {
+        //     headers: {
+        //         "Content-Type": "application/json",
+        //     }
+        // }
+        // );
+        const sessionName = await localStorage.getItem('sessionName');
+
         const response_getAgent = await httpService.post('/crm/getData', {
-            "username":"birashk@outlook.com",
+            "sessionName":sessionName,
             "query": `SELECT * FROM vtcmAgents where id=${agent_id}`,
         }, {
             headers: {
@@ -75,7 +85,7 @@ const MainLayout = () => {
             <div id="main" className={`col-span-6 md:col-span-5 flex flex-col h-screen ${isSidebarOpen ? 'hidden md:block' : 'block'}`}>
                 <nav id="navbar" className="bg-slate-700 h-10">
                     <div className="text-white p-2 pr-5 text-sm">
-                        {agent && (agent.fld_vtcmagentsf1 + "، " + "به جهان ارتباطات نکا خوش آمدید")}
+                        {agent && (agent.fld_vtcmagentsf1 + "، " + "به نکاتل خوش آمدید")}
                     </div>
                 </nav>
                 <div className="bg-slate-300 p-1 block md:hidden">

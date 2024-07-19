@@ -8,18 +8,29 @@ const useFetchCommisiun=(tableName,agentField)=>{
     const sessionName = localStorage.getItem('sessionName');
     const [data,setData] = useState([]);
 
-    const getData = async () => {
-        const response = await httpService.post('/NetExpert/GetCRMQueries', {
-            "sessionName": sessionName,
-            "operation": `SELECT * FROM ${tableName} where ${agentField}=${agent_id};`, //  
-            "CrmRequestType": 1
-        }, { 
+    const getData = async (tableName,agentField) => {
+        // const response = await httpService.post('/NetExpert/GetCRMQueries', {
+        //     "sessionName": sessionName,
+        //     "operation": `SELECT * FROM ${tableName} where ${agentField}=${agent_id};`, //  
+        //     "CrmRequestType": 1
+        // }, { 
+        //     headers: {
+        //         "Content-Type": "application/json",
+        //         "Authorization": sinaToken
+        //     }
+        // }
+        // );
+        const sessionName = await localStorage.getItem('sessionName');
+
+        const response = await httpService.post('/crm/getData', {
+            "sessionName":sessionName,
+            "query": `SELECT * FROM ${tableName} where ${agentField}=${agent_id}`,
+        }, {
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": sinaToken
             }
         }
-        );
+        );   
 
         if(response){
             setData(response.data.result)
@@ -29,8 +40,8 @@ const useFetchCommisiun=(tableName,agentField)=>{
     }
 
     useEffect(() => {
-        getData();
-    }, []);
+        getData(tableName,agentField);
+    }, [tableName]);
 
     return data;    
 }

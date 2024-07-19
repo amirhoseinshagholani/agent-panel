@@ -144,10 +144,11 @@ export async function submitInsertContact({ request }) {
     }`;
 
     if (currentContact) {
+        const sessionName = await localStorage.getItem('sessionName');
         const response_insertContact = await httpService.post('/crm/postData', {
+            "sessionName":sessionName,
             "element": currentContact,
             "elementType": "Contacts",
-            "username": "birashk@outlook.com"
         }, {
             headers: {
                 "Content-Type": "application/json",

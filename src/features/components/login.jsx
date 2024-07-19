@@ -80,27 +80,20 @@ export async function loginAction({ request }) {
 
     const mellicode = data.mellicode;
     const password = data.password;
-    // console.log(password);
-    // const navigate = useNavigate();
 
-    // const sinaToken = localStorage.getItem('sinaToken');
-    // const sessionName = localStorage.getItem('sessionName');
-
-
-    // const response_getAgent = await httpService.post('/NetExpert/GetCRMQueries', {
-    //     "sessionName": sessionName,
-    //     "operation": `SELECT * FROM vtcmAgents where cf_1662=${mellicode} AND cf_1695=${password};`,
-    //     "CrmRequestType": 1
-    // }, {
-    //     headers: {
-    //         "Content-Type": "application/json",
-    //         "Authorization": sinaToken
-    //     }
-    // }
-    // );
+    const response_getSessionName = await httpService.post('/crm/getSessionName', {
+        "username":"birashk@outlook.com",
+    }, {
+        headers: {
+            "Content-Type": "application/json",
+        }
+    }
+    );
+    const sessionName = response_getSessionName.data;
+    localStorage.setItem('sessionName', response_getSessionName.data);
 
     const response_getAgent = await httpService.post('/crm/getData', {
-        "username":"birashk@outlook.com",
+        "sessionName":sessionName,
         "query": `SELECT * FROM vtcmAgents where cf_1662=${mellicode} AND cf_1695=${password}`,
     }, {
         headers: {
@@ -108,9 +101,11 @@ export async function loginAction({ request }) {
         }
     }
     );
+    // console.log(response_getAgent.data.result[0]);
 
     if (response_getAgent.data.result.length) {
         localStorage.setItem('agent_id', response_getAgent.data.result[0].id);
+        
         // console.log(response_getAgent.data.result[0].id);
         // Cookies.set('agent_id', response_getAgent.data.result[0].id);
         return response_getAgent.data.result[0];

@@ -19,7 +19,7 @@ const ShowDetailsFactor = () => {
     }
 
     const detailsFactor = useFetchDetailsInvoice('Invoice', decrypt(id));
-    const products = useFetchProduct();
+    const products = useFetchProduct('Products');
 
     useEffect(() => {
         console.log(detailsFactor);

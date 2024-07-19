@@ -17,7 +17,7 @@ const ShowDetailsPreFactor=()=>{
 
     const detailsSalesOrder = useFetchDetailsOrder('SalesOrder', decrypt(id));
 
-    const products = useFetchProduct();
+    const products = useFetchProduct('Products');
     const getProductName=(id)=>{
         const product = products.find(res=>res.id === id);
         return product ? product.productname : 'نامشخص';

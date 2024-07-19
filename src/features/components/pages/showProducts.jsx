@@ -10,7 +10,7 @@ import Grid from "../../../core/grid";
 
 const ShowProducts = () => {
 
-    const products = useFetchProduct();
+    const products = useFetchProduct('Products');
 
     const data = products && products.map(res => (
         {

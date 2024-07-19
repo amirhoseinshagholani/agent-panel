@@ -12,10 +12,9 @@ const InsertSale = () => {
     const agent_id = localStorage.getItem('agent_id');
     // const clues = useFetchClues('Leads', 'cf_1675');
     const customers = useFetchCustomers('Contacts', 'cf_1677');
+    const product = useFetchProduct('Products');
 
-    const product = useFetchProduct();
-
-    const [productValue, setProductValue] = useState('');
+    const [productValue, setProductValue] = useState('');  
     const handleProductChange = (event) => {
         setProductValue(event.target.value);
     };
@@ -376,27 +375,43 @@ export async function submitInsertSaleOrder({ request }) {
         }`;
     }
 
-    const sinaToken = localStorage.getItem('sinaToken');
-    const sessionName = localStorage.getItem('sessionName');
+    // const sinaToken = localStorage.getItem('sinaToken');
+    // const sessionName = localStorage.getItem('sessionName');
 
-    console.log(sessionName);
+    // console.log(sessionName);
+    // if (currentOrder) {
+    //     const response_insertSale = await httpService.post('/NetExpert/RegisterCrmTicket', {
+    //         "sessionName": sessionName,
+    //         "operation": `create`,
+    //         "element": currentOrder,
+    //         "elementType": "SalesOrder",
+    //         "CrmRegisterRequestType": 1
+    //     }, {
+    //         headers: {
+    //             "Content-Type": "multipart/form-data; boundary=<calculated when request is sent>",
+    //             "Authorization": sinaToken
+    //         }
+    //     });
+    //     console.log(response_insertSale);
+    //     alert("سفارش مورد نظر ثبت شد");
+    //     return response_insertSale.status == 200;
+    // }
     if (currentOrder) {
-        const response_insertSale = await httpService.post('/NetExpert/RegisterCrmTicket', {
-            "sessionName": sessionName,
-            "operation": `create`,
+        const sessionName = await localStorage.getItem('sessionName');
+        const response_insertSale = await httpService.post('/crm/postData', {
+            "sessionName":sessionName,
             "element": currentOrder,
             "elementType": "SalesOrder",
-            "CrmRegisterRequestType": 1
         }, {
             headers: {
-                "Content-Type": "multipart/form-data; boundary=<calculated when request is sent>",
-                "Authorization": sinaToken
+                "Content-Type": "application/json",
             }
         });
-        console.log(response_insertSale);
+        // console.log(response_insertSale);
         alert("سفارش مورد نظر ثبت شد");
         return response_insertSale.status == 200;
     }
+
 
     return false;
 }

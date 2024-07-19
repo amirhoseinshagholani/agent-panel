@@ -6,8 +6,8 @@ import useFetchCustomers from "../../hooks/useFetchCustomers";
 import Grid from "../../../core/grid";
 
 
-const ShowCustomers =  () => {
-
+const ShowCustomers = () => {
+    
     const customers = useFetchCustomers('Contacts', 'cf_1677');
 
     const data = customers && customers.reverse().map(res => (
@@ -16,13 +16,13 @@ const ShowCustomers =  () => {
                 firstName: res.firstname,
                 lastName: res.lastname,
             }, 
-            mobile: res.mobile,
+            mobile: res.mobile, 
             melliCode: res.cf_1447,
             state: res.mailingstate,
             city: res.mailingcity,
         }
     ))
-
+ 
     const columns = useMemo(
         () => [
             {
@@ -54,9 +54,9 @@ const ShowCustomers =  () => {
         [],
     );
 
-    useEffect(() => {
-        console.log(customers)
-    }, [customers])
+    // useEffect(() => {
+    //     console.log(customers)
+    // }, [customers])
 
     return (
         <div className="text-gray-900 bg-gray-200 rounded rounded-t-3xl">

@@ -2,23 +2,24 @@
 import { useEffect, useState } from "react";
 import { httpService } from "@core/http-service";
 
-const useFetchProduct = () => {
-    const sinaToken = localStorage.getItem('sinaToken');
-    const sessionName = localStorage.getItem('sessionName');
+const useFetchProduct = (tableName) => {
+
     const [data, setData] = useState([]);
 
-    const getData = async () => {
-        const response = await httpService.post('/NetExpert/GetCRMQueries', {
-            "sessionName": sessionName,
-            "operation": `SELECT * FROM Products;`,
-            "CrmRequestType": 1
+    const getData = async (tableName) => {
+        const sessionName = await localStorage.getItem('sessionName');
+
+        const response = await httpService.post('/crm/getData', {
+            "sessionName":sessionName,
+            "query": `SELECT * FROM ${tableName}`,
         }, {
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": sinaToken
             }
         }
-        );
+        );   
+
+        // console.log(response);
 
         if (response) {
             setData(response.data.result)
@@ -28,8 +29,8 @@ const useFetchProduct = () => {
     }
 
     useEffect(() => {
-        getData();
-    }, []);
+        getData(tableName);
+    }, [tableName]);
 
     return data;
 }

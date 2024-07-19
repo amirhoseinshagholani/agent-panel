@@ -8,18 +8,30 @@ const useFetchDetailsOrder=(tableName,saleOrderId)=>{
     const sessionName = localStorage.getItem('sessionName');
     const [data,setData] = useState([]);
 
-    const getData = async () => {
-        const response = await httpService.post('/NetExpert/GetCRMQueries', {
-            "sessionName": sessionName,
-            "operation": `SELECT * FROM ${tableName} where id=${saleOrderId};`,
-            "CrmRequestType": 1
-        }, { 
+    const getData = async (tableName,saleOrderId) => {
+        // const response = await httpService.post('/NetExpert/GetCRMQueries', {
+        //     "sessionName": sessionName,
+        //     "operation": `SELECT * FROM ${tableName} where id=${saleOrderId};`,
+        //     "CrmRequestType": 1
+        // }, { 
+        //     headers: {
+        //         "Content-Type": "application/json",
+        //         "Authorization": sinaToken
+        //     }
+        // }
+        // );
+
+        const sessionName = await localStorage.getItem('sessionName');
+
+        const response = await httpService.post('/crm/getData', {
+            "sessionName":sessionName,
+            "query": `SELECT * FROM ${tableName} where id=${saleOrderId}`,
+        }, {
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": sinaToken
             }
         }
-        );
+        );   
 
         if(response){
             setData(response.data.result)
@@ -29,8 +41,8 @@ const useFetchDetailsOrder=(tableName,saleOrderId)=>{
     }
 
     useEffect(() => {
-        getData();
-    }, []);
+        getData(tableName,saleOrderId);
+    }, [tableName]);
 
     return data;    
 }
