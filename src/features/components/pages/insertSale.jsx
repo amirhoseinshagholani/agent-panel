@@ -14,7 +14,7 @@ const InsertSale = () => {
     const customers = useFetchCustomers('Contacts', 'cf_1677');
     const product = useFetchProduct('Products');
 
-    const [productValue, setProductValue] = useState('');  
+    const [productValue, setProductValue] = useState('');
     const handleProductChange = (event) => {
         setProductValue(event.target.value);
     };
@@ -49,6 +49,7 @@ const InsertSale = () => {
         var producttype;
         var tax;
         var totalRow = 0;
+        var totalPrice = 0;
         var discount = discountValue || 0;
         console.log(product);
         product.map(res => {
@@ -56,8 +57,11 @@ const InsertSale = () => {
                 price = res.unit_price;
                 productname = res.productname;
                 producttype = res.cf_1699;
-                tax = parseInt(price * 0.1);
-                totalRow = (parseInt(price) + parseInt(tax) - parseInt(discount)) * amounttValue;
+                totalPrice = price * amounttValue - parseInt(discount);
+                tax = parseInt(totalPrice * 0.1);
+
+                // totalRow = (parseInt(price) + parseInt(tax) - parseInt(discount)) * amounttValue;
+                totalRow = totalPrice + parseInt(tax);
                 setTotal((prevArray) => parseInt(totalRow) + parseInt(prevArray));
             }
         })
@@ -136,7 +140,9 @@ const InsertSale = () => {
         // بروزرسانی مجموع کل
         let newTotal = 0;
         updatedProductList.forEach(item => {
-            const itemTotal = (parseInt(item.price) + parseInt(item.price * 0.1) - parseInt(item.discount)) * item.amount;
+            const step1 = parseInt(item.price) * parseInt(item.amount);
+            const step2 = step1 - parseInt(item.discount);
+            const itemTotal = step2 + parseInt(step2 * 0.1);
             newTotal += itemTotal;
         });
         setTotal(newTotal);
@@ -145,11 +151,12 @@ const InsertSale = () => {
     const data = productList && productList.map(res => (
         {
             product: res.ProductName,
+            amount: res.amount,
             producttype: res.producttype,
             price: seprateNumber(parseInt(res.price)),
-            tax: seprateNumber(parseInt(res.price * 0.1)),
-            amount: res.amount,
-            discount: seprateNumber(parseInt(res.discount))
+            discount: seprateNumber(parseInt(res.discount)),
+            tax: seprateNumber(parseInt((parseInt(res.price) * parseInt(res.amount) - parseInt(res.discount)) * 0.1))
+
         }
     ))
 
@@ -175,11 +182,6 @@ const InsertSale = () => {
                 size: 150,
             },
             {
-                accessorKey: 'tax',
-                header: 'مالیات',
-                size: 150,
-            },
-            {
                 accessorKey: 'amount',
                 header: 'تعداد',
                 size: 100,
@@ -188,6 +190,11 @@ const InsertSale = () => {
                 accessorKey: 'discount',
                 header: 'تخفیف(ریال)',
                 size: 100,
+            },
+            {
+                accessorKey: 'tax',
+                header: 'مالیات',
+                size: 150,
             },
             {
                 Header: '',
@@ -399,7 +406,7 @@ export async function submitInsertSaleOrder({ request }) {
     if (currentOrder) {
         const sessionName = await localStorage.getItem('sessionName');
         const response_insertSale = await httpService.post('/crm/postData', {
-            "sessionName":sessionName,
+            "sessionName": sessionName,
             "element": currentOrder,
             "elementType": "SalesOrder",
         }, {
