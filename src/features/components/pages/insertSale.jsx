@@ -19,7 +19,7 @@ const InsertSale = () => {
         setProductValue(event.target.value);
     };
 
-    const [amounttValue, setAmountValue] = useState(0);     //برای دریافت مقدار یا تعداد استفاده می شود
+    const [amounttValue, setAmountValue] = useState(1);     //برای دریافت مقدار یا تعداد استفاده می شود
     const handleAmountChange = () => {
         const value = document.getElementById('amount').value;
         setAmountValue(value);

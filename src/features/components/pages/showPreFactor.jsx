@@ -20,6 +20,7 @@ const ShowPreFactor = () => {
             createdtime: to_jalali(res.createdtime),
             hdnGrandTotal: seprateNumber(parseInt(res.hdnGrandTotal)),
             tax: seprateNumber(parseInt(res.pre_tax_total * 0.1)),
+            status: res.sostatus === 'Created' ? 'ایجاد شده' : res.sostatus,
             linkDetails: '/panel/showPreFactor/details/jkdojdl7d98547q!@gh%' + res.id + '*p)8d$#ss@14203ddef'
         }
     ))
@@ -49,6 +50,11 @@ const ShowPreFactor = () => {
             {
                 accessorKey: 'tax',
                 header: 'مالیات(ریال)',
+                size: 100,
+            },
+            {
+                accessorKey: 'status',
+                header: 'وضعیت',
                 size: 100,
             },
             {

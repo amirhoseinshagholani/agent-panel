@@ -24,7 +24,7 @@ const useFetchSalesOrder=(tableName,agentField)=>{
 
         const response = await httpService.post('/crm/getData', {
             "sessionName":sessionName,
-            "query": `SELECT subject,contact_id,cf_1704,cf_1706,createdtime,hdnGrandTotal,pre_tax_total,cf_1471,ship_state,bill_city,bill_code,bill_street FROM ${tableName} where ${agentField}=${agent_id} and sostatus != 'فاکتور شده'`,
+            "query": `SELECT subject,contact_id,sostatus,cf_1704,cf_1706,createdtime,hdnGrandTotal,pre_tax_total,cf_1471,ship_state,bill_city,bill_code,bill_street FROM ${tableName} where ${agentField}=${agent_id} and sostatus != 'فاکتور شده'`,
         }, {
             headers: {
                 "Content-Type": "application/json",
