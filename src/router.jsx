@@ -16,6 +16,7 @@ import ShowProducts from "./features/components/pages/showProducts";
 import Example from "./features/components/pages/example";
 import UploadFiles, { submitUploadFiles } from "./features/components/pages/uploadFiles";
 import EditSale from "./features/components/pages/editSale";
+import NotFount from "./features/components/pages/notFound";
 
 const router = createBrowserRouter([
     {
@@ -80,6 +81,10 @@ const router = createBrowserRouter([
             path:'uploadFiles',
             element:<UploadFiles/>,
             action:submitUploadFiles
+        },
+        {
+            path:'*',
+            element:<NotFount/>
         }
     ]
     }
