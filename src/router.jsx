@@ -81,12 +81,12 @@ const router = createBrowserRouter([
             path:'uploadFiles',
             element:<UploadFiles/>,
             action:submitUploadFiles
-        },
-        {
-            path:'*',
-            element:<NotFount/>
         }
     ]
+    },
+    {
+        path:'*',
+        element:<NotFount/>
     }
 ])
 
